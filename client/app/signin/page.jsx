@@ -10,6 +10,7 @@ export default function page() {
     batch: 0,
     password: "",
   };
+  
   const [input, setInput] = useState(initInput);
   const router = useRouter();
   function handleChange(e) {
