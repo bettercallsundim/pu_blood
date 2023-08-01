@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   isInterested: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   bgroup: {
     type: String,

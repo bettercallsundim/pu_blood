@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function page() {
   const initInput = {
@@ -10,7 +12,7 @@ export default function page() {
     batch: 0,
     password: "",
   };
-  
+
   const [input, setInput] = useState(initInput);
   const router = useRouter();
   function handleChange(e) {
@@ -19,6 +21,10 @@ export default function page() {
       ...input,
       [e.target.name]: e.target.value,
     });
+  }
+  async function handleGoogle(e) {
+    e.preventDefault();
+    await axios.get("http://localhost:4000/auth/google");
   }
 
   async function submitInput(e) {
@@ -31,6 +37,28 @@ export default function page() {
       })
       .then((res) => {
         if (res.data.success) {
+          toast("Logged In Successfully !", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          router.push("/home");
+        }
+      });
+  }
+  async function handleLocal(e) {
+    e.preventDefault();
+    await axios
+      .post("http://localhost:4000/auth/local_login", input, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.success) {
           router.push("/home");
         }
       });
@@ -38,6 +66,18 @@ export default function page() {
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:min-h-screen lg:py-0">
         <div className="w-full rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -104,6 +144,19 @@ export default function page() {
               >
                 Sign In
               </button>
+              <button
+                onClick={handleLocal}
+                type="button"
+                className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium  focus:outline-none  rounded-lg border dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              >
+                Sign In With Local Strategy
+              </button>
+              <a
+                href="http://localhost:4000/auth/google"
+                className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium  focus:outline-none  rounded-lg border dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              >
+                Sign In With Google
+              </a>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don't have an account?{" "}
                 <Link

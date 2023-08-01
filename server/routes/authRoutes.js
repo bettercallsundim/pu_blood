@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import auth from "../middleware/auth.js";
 const router = express.Router();
+import passport from "passport";
 
 router.post("/signup", async (req, res) => {
   const { idno, bgroup, batch, password } = req.body;
@@ -36,7 +37,11 @@ router.post("/signup", async (req, res) => {
 router.get("/test", auth, (req, res) => {
   res.send("from test");
 });
-
+router.get("/getDonors", auth, async (req, res) => {
+  const donors = await User.find({ isInterested: true });
+  console.log(donors);
+  return res.json({ data: donors });
+});
 //login
 router.post("/signin", async (req, res) => {
   const { idno, batch, password } = req.body;
@@ -57,9 +62,9 @@ router.post("/signin", async (req, res) => {
       // console.log(token);
       return res
         .cookie("jwt", token, {
-          httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          // httpOnly: true,
+          // secure: false,
+          // sameSite: "strict",
         })
         .json({
           success: true,
@@ -79,5 +84,50 @@ router.post("/signin", async (req, res) => {
     });
   }
 });
+//log out
+router.get("/signout", async (req, res) => {
+  return res.cookie("jwt", "").json({
+    success: true,
+    message: "Logout Success!",
+  });
+});
+
+//passport
+
+//google login
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/auth/google/success",
+    failureRedirect: "/auth/google/failure",
+  })
+);
+
+//local login
+router.post(
+  "/local_login",
+  passport.authenticate("local"),
+  function (req, res) {
+    console.log("successfully logged in");
+    return res
+      .cookie("user", token, {
+        // httpOnly: true,
+        // secure: false,
+        // sameSite: "strict",
+      })
+      .json({
+        success: true,
+        message: "Login Success!",
+        token,
+      });
+    s;
+    res.redirect("http://localhost:3000/donors");
+  }
+);
 
 export default router;

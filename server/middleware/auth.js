@@ -2,15 +2,18 @@ import jwt from "jsonwebtoken";
 const isVerified = async (req, res, next) => {
   let token;
   token = req.cookies.jwt;
-
+  console.log("tokennn", token);
   if (token) {
-    let decoded = jwt.verify(token, "cat");
+    let { idno, batch } = jwt.verify(token, "cat");
     // console.log("your", decoded);
-    if (decoded) {
-      req.username = decoded.username;
+    if (idno && batch) {
+      req.user = {
+        idno,
+        batch,
+      };
       next();
     } else {
-      res.send("not  token");
+      res.send("not token");
     }
   } else {
     res.send("not found token");

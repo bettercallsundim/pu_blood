@@ -1,4 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+table,
+tr,
+td {
+  border-bottom: 0.1px solid rgb(179, 179, 179);
+  border-right: 0.1px solid rgb(197, 197, 197);
+}
+tr,
+td {
+  padding: 4px 8px;
+}
+.lexend {
+  font-family: "Lexend", sans-serif;
+}
