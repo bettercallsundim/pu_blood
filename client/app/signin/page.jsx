@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,22 +47,23 @@ export default function page() {
             progress: undefined,
             theme: "dark",
           });
+          localStorage.setItem("token", JSON.stringify(res.data.token));
           router.push("/home");
         }
       });
   }
-  async function handleLocal(e) {
-    e.preventDefault();
-    await axios
-      .post("http://localhost:4000/auth/local_login", input, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        if (res.data.success) {
-          router.push("/home");
-        }
-      });
-  }
+  // async function handleLocal(e) {
+  //   e.preventDefault();
+  //   await axios
+  //     .post("http://localhost:4000/auth/local_login", input, {
+  //       withCredentials: true,
+  //     })
+  //     .then((res) => {
+  //       if (res.data.success) {
+  //         router.push("/home");
+  //       }
+  //     });
+  // }
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -144,7 +145,7 @@ export default function page() {
               >
                 Sign In
               </button>
-              <button
+              {/* <button
                 onClick={handleLocal}
                 type="button"
                 className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium  focus:outline-none  rounded-lg border dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -156,7 +157,7 @@ export default function page() {
                 className="py-2.5 px-5 mr-2 mb-2 text-sm font-medium  focus:outline-none  rounded-lg border dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
               >
                 Sign In With Google
-              </a>
+              </a> */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don't have an account?{" "}
                 <Link
@@ -164,6 +165,15 @@ export default function page() {
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign Up
+                </Link>
+              </p>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                Forgot Password?{" "}
+                <Link
+                  href="/forgot"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Click Here
                 </Link>
               </p>
             </form>

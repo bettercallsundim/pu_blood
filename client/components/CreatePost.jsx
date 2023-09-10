@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-
+import React, { useState } from "react";
 export default function CreatePost() {
+  const queryClient = useQueryClient();
+
   const initState = {
     post: "",
     bgroup: "",
@@ -18,13 +20,21 @@ export default function CreatePost() {
       [e.target.name]: e.target.value,
     });
   };
-  const handleSubmit = async () => {
-    console.log(state);
-    await axios.post(`http://localhost:4000/blood/post`, state, {
+  const handleSubmit = async (param) => {
+    return axios.post(`http://localhost:4000/blood/post`, param, {
       withCredentials: true,
     });
-    window.location.reload();
   };
+  const { mutate } = useMutation({
+    mutationFn: handleSubmit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+    // onSuccess: (data) => {
+    //   queryClient.setQueryData(["posts"], state);
+    // },
+  });
+
   return (
     <div className="bg-gray-200 text-black px-8 text-xl">
       <p className="mb-12 pt-16 text-3xl underline">Create Post :</p>
@@ -95,7 +105,7 @@ export default function CreatePost() {
       </p>
       <p>
         <button
-          onClick={handleSubmit}
+          onClick={() => mutate(state)}
           className="bg-rose-600 px-3 py-2 text-white rounded-lg mt-4 text-md hover:bg-rose-700 duration-100 focus:scale-95"
         >
           Post

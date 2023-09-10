@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function page() {
   const initInput = {
@@ -10,6 +10,7 @@ export default function page() {
     batch: 0,
     bgroup: "",
     password: "",
+    email: "",
   };
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [input, setInput] = useState(initInput);
@@ -56,7 +57,24 @@ export default function page() {
                   name="idno"
                   id="idno"
                   className="sm:text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
+                  placeholder="1000"
+                  required
+                ></input>
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium  dark:text-white"
+                >
+                  Your email :
+                </label>
+                <input
+                  onChange={handleChange}
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="sm:text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="1000"
                   required
                 ></input>
               </div>

@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import donorReducer from "./donorSlice";
 import postsReducer from "./postSlice";
+import appReducer from "./appSlice";
 // const store = configureStore({
 //   name: "donors",
 //   reducer: donorReducer,
@@ -8,6 +9,7 @@ import postsReducer from "./postSlice";
 const rootReducer = combineReducers({
   donors: donorReducer,
   posts: postsReducer,
+  app: appReducer,
 });
 
 const store = configureStore({

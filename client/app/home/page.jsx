@@ -5,9 +5,9 @@ import { Button } from "@mui/material";
 // import { MdOutlineBloodtype } from "react-icons/md";
 export default function page() {
   return (
-    <div>
+    <div className="dark:bg-black dark:text-white">
       <Navbar />
-      <div className="hero relative px-10 min-h-screen">
+      <div className="hero relative px-10 min-h-screen ">
         <div className="mt-20">
           <Typography className="text-gray-800" variant="h1">
             One stop <br></br>

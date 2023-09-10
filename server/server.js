@@ -1,17 +1,17 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
+import compression from "compression";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import * as dotenv from "dotenv";
+import express from "express";
+import helmet from "helmet";
+import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
 import bloodRoutes from "./routes/bloodRoutes.js";
-import passport from "passport";
-import helmet from "helmet";
-import compression from "compression";
+// import { errorLogger } from "./middlewares/Error_handler.js";
 
 dotenv.config();
-// import "./middleware/passport.js";
 const app = express();
+
 app.use(helmet());
 app.use(compression());
 app.use(
@@ -23,7 +23,6 @@ app.use(
 app.disable("x-powered-by");
 app.use(express.json());
 app.use(cookieParser());
-// app.use(passport.initialize());
 app.use("/auth", authRoutes);
 app.use("/blood", bloodRoutes);
 
@@ -33,13 +32,16 @@ mongoose
     useUnifiedTopology: true,
   })
   .then((res) => {
-    // passport authentication
 
     app.get("/", (req, res) => {
-      res.send("Hello from backend");
+      res.send("Hello from LOL");
     });
     console.log("DB connected");
-    app.listen(process.env.PORT, console.log("Server started"));
+    const errorLogger = (err, req, res, next) => {
+      console.log("req time", req.requestTime);
+      next();
+    };
+    app.listen(4000, console.log("Server started"));
   })
   .catch((err) => {
     console.log("DB connection failed");

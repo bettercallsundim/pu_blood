@@ -1,14 +1,15 @@
 import express from "express";
-import User from "../models/User.model.js";
-import Post from "../models/Post.model.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import auth from "../middleware/auth.js";
+import Post from "../models/Post.model.js";
+import User from "../models/User.model.js";
 const router = express.Router();
 
 router.get("/getDonors", auth, async (req, res) => {
-  const donors = await User.find({ isInterested: true });
-  console.log(donors);
+  let donorsQuery = User.find({ isInterested: true });
+  donorsQuery = donorsQuery.sort(req.query.sort);
+  let donors = await donorsQuery;
+  console.log(req.query.sort);
+  // console.log(donors);
   return res.json({ data: donors });
 });
 //get personal post
